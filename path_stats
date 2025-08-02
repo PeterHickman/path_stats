@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'etc'
+
+path = File.expand_path(ARGV.shift)
+parts = path.split('/')[1..]
+
+(0...parts.size).each do |i|
+  name = "/#{parts[0..i].join('/')}"
+
+  puts "==> #{name}"
+  begin
+    x = File.stat(name)
+    puts "    GID #{x.gid} #{Etc.getgrgid(x.gid).name}"
+    puts "    UID #{x.uid} #{Etc.getpwuid(x.uid).name}"
+  rescue => e
+    puts "    #{e}"
+  end
+end
